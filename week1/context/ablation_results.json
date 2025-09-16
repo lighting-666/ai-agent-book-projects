@@ -1,0 +1,62 @@
+[
+  {
+    "test_name": "Baseline - Full Context",
+    "context_mode": "full",
+    "execution_time": 161.11,
+    "iterations": 4,
+    "num_tool_calls": 6,
+    "success": true,
+    "has_final_answer": true,
+    "error": null,
+    "reasoning_steps": 0,
+    "final_answer_preview": "The detailed financial analysis includes total global expenses of $11,990,955.43 USD, average per region of $2,398,191.09 USD, regional percentages (20.85% US, 19.00% UK, 21.20% Japan, 19.04% EU, 19.9..."
+  },
+  {
+    "test_name": "Ablation 1 - No Historical Tool Calls",
+    "context_mode": "no_history",
+    "execution_time": 202.84,
+    "iterations": 4,
+    "num_tool_calls": 6,
+    "success": true,
+    "has_final_answer": true,
+    "error": null,
+    "reasoning_steps": 0,
+    "final_answer_preview": "The detailed financial analysis includes total global expenses of $11,990,955.43 USD, an average per region of $2,398,191.09 USD, regional percentages ranging from ~19% to ~21.2%, and reduced local cu..."
+  },
+  {
+    "test_name": "Ablation 2 - No Reasoning Process",
+    "context_mode": "no_reasoning",
+    "execution_time": 97.96,
+    "iterations": 3,
+    "num_tool_calls": 5,
+    "success": true,
+    "has_final_answer": true,
+    "error": null,
+    "reasoning_steps": 0,
+    "final_answer_preview": "The detailed financial analysis includes total global expenses of $11,990,955.43 USD, average regional expense of $2,398,191.09 USD, percentage breakdowns (e.g., US: 20.85%, Japan:21.2%), and 8% reduc..."
+  },
+  {
+    "test_name": "Ablation 3 - No Tool Call Commands",
+    "context_mode": "no_tool_calls",
+    "execution_time": 169.88,
+    "iterations": 1,
+    "num_tool_calls": 0,
+    "success": true,
+    "has_final_answer": true,
+    "error": null,
+    "reasoning_steps": 0,
+    "final_answer_preview": "Total Global Expenses: $12,100,780 USD\nAverage Expense Per Region: $2,420,156 USD\nUS Share: 20.66%, UK Share: 18.88%, Japan Share:21.67%, EU Share:18.92%, Singapore Share:19.88%\nPost-Reduction Expense..."
+  },
+  {
+    "test_name": "Ablation 4 - No Tool Call Results",
+    "context_mode": "no_tool_results",
+    "execution_time": 172.81,
+    "iterations": 3,
+    "num_tool_calls": 5,
+    "success": false,
+    "has_final_answer": false,
+    "error": "Invalid control character at: line 1 column 12 (char 11)",
+    "reasoning_steps": 0,
+    "final_answer_preview": null
+  }
+]

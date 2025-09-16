@@ -1,0 +1,9 @@
+{
+  "success": false,
+  "iterations": 1,
+  "final_answer": null,
+  "error": "Request timed out. The model is taking too long to respond. Try a simpler task or different provider.",
+  "context_mode": "full",
+  "tool_calls": [],
+  "reasoning_steps": []
+}

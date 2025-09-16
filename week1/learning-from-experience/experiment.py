@@ -111,8 +111,8 @@ class ExperimentRunner:
         return results
     
     def run_llm_experiment(self,
-                          num_training_episodes: int = 20,
-                          num_eval_episodes: int = 10,
+                          num_training_episodes: int = 2,#20
+                          num_eval_episodes: int = 1, #10
                           verbose: bool = True,
                           stochastic: bool = False) -> Dict[str, Any]:
         """
@@ -347,7 +347,7 @@ class ExperimentRunner:
     
     def run_full_experiment(self,
                            rl_episodes: int = 5000,
-                           llm_episodes: int = 20,
+                           llm_episodes: int = 2,#20
                            verbose: bool = False,
                            stochastic: bool = False):
         """
@@ -430,7 +430,7 @@ def main():
         help="Number of training episodes for RL agent"
     )
     parser.add_argument(
-        "--llm-episodes", type=int, default=20,
+        "--llm-episodes", type=int, default=2,#20
         help="Number of training episodes for LLM agent"
     )
     parser.add_argument(
