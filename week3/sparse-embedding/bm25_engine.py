@@ -35,17 +35,79 @@ class TextProcessor:
         logger.info(f"TextProcessor initialized with {len(self.stop_words)} stop words")
     
     def tokenize(self, text: str, remove_stop_words: bool = True) -> List[str]:
-        """Tokenize text into words"""
+        """Tokenize text into words, numbers, and codes.
+        
+        Handles:
+        - Words (preserving case for acronyms)
+        - Numbers (404, 500, 3.14)
+        - Codes (XK9-2B4-7Q1, API_KEY, user@example.com)
+        - Technical terms (C++, .NET, Node.js)
+        """
         logger.debug(f"Tokenizing text of length {len(text)}")
         
-        # Convert to lowercase and split by non-alphanumeric characters
-        text = text.lower()
-        tokens = re.findall(r'\b[a-z]+\b', text)
+        # Comprehensive tokenization patterns
+        patterns = [
+            # Email addresses (keep whole)
+            r'\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b',
+            # URLs (simplified)
+            r'https?://[^\s]+',
+            # API keys, codes with hyphens/underscores (e.g., XK9-2B4-7Q1, API_KEY_123)
+            r'\b[A-Z0-9]+(?:[_-][A-Z0-9]+)+\b',
+            # Technical terms with special chars (C++, C#, .NET)
+            r'\b[A-Z]\+\+|\b[A-Z]#|\.[A-Z]+[a-zA-Z]*',
+            # Version numbers (3.14, 2.0.1)
+            r'\b\d+(?:\.\d+)+\b',
+            # Hex codes (#FF5733, 0x1234)
+            r'#[0-9A-Fa-f]{3,8}\b|0x[0-9A-Fa-f]+\b',
+            # Numbers (including decimals)
+            r'\b\d+(?:\.\d+)?\b',
+            # Acronyms and uppercase words (USA, NASA, API)
+            r'\b[A-Z]{2,}\b',
+            # Mixed case words (JavaScript, PyTorch)
+            r'\b[A-Z][a-z]+[A-Z][a-zA-Z]*\b',
+            # Alphanumeric combinations (Python3, ES6, 3DS)
+            r'\b[A-Za-z]+\d+\b|\b\d+[A-Za-z]+\b',
+            # Regular words (including apostrophes)
+            r"\b[a-zA-Z]+(?:'[a-z]+)?\b",
+        ]
+        
+        # Combine all patterns
+        combined_pattern = '|'.join(f'({p})' for p in patterns)
+        
+        # Extract all tokens
+        raw_tokens = re.findall(combined_pattern, text, re.IGNORECASE)
+        
+        # Flatten the results (findall with groups returns tuples)
+        tokens = []
+        for match in raw_tokens:
+            token = next(t for t in match if t)  # Get the non-empty match
+            
+            # Preserve case for:
+            # - All uppercase words (API, USA)
+            # - Mixed case (JavaScript, PyTorch)
+            # - Codes with special chars
+            # - Numbers
+            # - Alphanumeric combinations (Python3, ES6)
+            if (token.isupper() and len(token) > 1) or \
+               any(c.isupper() for c in token[1:]) or \
+               any(c in '-_@.#+' for c in token) or \
+               any(c.isdigit() for c in token) or \
+               token.startswith('.'):
+                tokens.append(token)
+            else:
+                # Convert regular words to lowercase
+                tokens.append(token.lower())
         
         logger.debug(f"Found {len(tokens)} raw tokens")
         
         if remove_stop_words:
-            tokens = [t for t in tokens if t not in self.stop_words]
+            # Only remove stop words from lowercase word tokens
+            filtered_tokens = []
+            for token in tokens:
+                # Keep if: not a lowercase word, or not in stop words
+                if not token.islower() or token not in self.stop_words:
+                    filtered_tokens.append(token)
+            tokens = filtered_tokens
             logger.debug(f"After removing stop words: {len(tokens)} tokens")
         
         return tokens
@@ -258,7 +320,13 @@ class BM25:
         term_doc_mapping = {}
         
         for term in query_terms:
+            # Try exact match first
             docs = self.index.get_posting_list(term)
+            
+            # If no exact match and term is not a number/code, try lowercase
+            if not docs and not term[0].isdigit() and '-' not in term:
+                docs = self.index.get_posting_list(term.lower())
+            
             candidate_docs.update(docs)
             term_doc_mapping[term] = docs
             logger.debug(f"Term '{term}' appears in {len(docs)} documents")
@@ -301,22 +369,37 @@ class SparseSearchEngine:
         self.index = InvertedIndex()
         self.bm25 = None
         self.next_doc_id = 0
+        # Map external doc_id to internal doc_id
+        self.external_to_internal = {}
+        # Map internal doc_id to external doc_id
+        self.internal_to_external = {}
         logger.info("SparseSearchEngine initialized")
     
-    def index_document(self, text: str, metadata: Optional[Dict] = None) -> int:
+    def index_document(self, text: str, metadata: Optional[Dict] = None, external_doc_id: Optional[str] = None) -> str:
         """Index a new document and return its ID"""
-        doc_id = self.next_doc_id
+        # Generate internal ID
+        internal_doc_id = self.next_doc_id
         self.next_doc_id += 1
         
-        logger.info(f"Indexing document with ID {doc_id}")
-        self.index.add_document(doc_id, text, metadata)
+        # Use external_doc_id if provided, otherwise use internal ID as string
+        if external_doc_id:
+            doc_id_str = external_doc_id
+        else:
+            doc_id_str = str(internal_doc_id)
+        
+        # Store mappings
+        self.external_to_internal[doc_id_str] = internal_doc_id
+        self.internal_to_external[internal_doc_id] = doc_id_str
+        
+        logger.info(f"Indexing document with external ID '{doc_id_str}' (internal ID {internal_doc_id})")
+        self.index.add_document(internal_doc_id, text, metadata)
         
         # Reinitialize BM25 with updated index
         self.bm25 = BM25(self.index)
         
-        return doc_id
+        return doc_id_str
     
-    def index_batch(self, documents: List[Dict]) -> List[int]:
+    def index_batch(self, documents: List[Dict]) -> List[str]:
         """Index multiple documents at once"""
         logger.info(f"Batch indexing {len(documents)} documents")
         doc_ids = []
@@ -324,7 +407,8 @@ class SparseSearchEngine:
         for doc in documents:
             text = doc.get('text', '')
             metadata = doc.get('metadata', None)
-            doc_id = self.index_document(text, metadata)
+            external_doc_id = doc.get('doc_id', None)
+            doc_id = self.index_document(text, metadata, external_doc_id)
             doc_ids.append(doc_id)
         
         logger.info(f"Batch indexing complete. Indexed {len(doc_ids)} documents")
@@ -341,31 +425,40 @@ class SparseSearchEngine:
         
         # Format results
         formatted_results = []
-        for doc_id, score, debug_info in results:
+        for internal_doc_id, score, debug_info in results:
+            # Get external doc_id
+            external_doc_id = self.internal_to_external.get(internal_doc_id, str(internal_doc_id))
+            
             result = {
-                'doc_id': doc_id,
+                'doc_id': external_doc_id,  # Use external doc_id
                 'score': score,
-                'text': self.index.documents[doc_id],
-                'metadata': self.index.doc_metadata.get(doc_id, {}),
+                'text': self.index.documents[internal_doc_id],
+                'metadata': self.index.doc_metadata.get(internal_doc_id, {}),
                 'debug': debug_info
             }
             formatted_results.append(result)
         
         return formatted_results
     
-    def get_document(self, doc_id: int) -> Optional[Dict]:
-        """Retrieve a document by ID"""
-        if doc_id not in self.index.documents:
+    def get_document(self, doc_id) -> Optional[Dict]:
+        """Retrieve a document by ID (can be internal or external)"""
+        # Check if it's an external doc_id
+        if isinstance(doc_id, str) and doc_id in self.external_to_internal:
+            internal_id = self.external_to_internal[doc_id]
+        elif isinstance(doc_id, int) and doc_id in self.index.documents:
+            internal_id = doc_id
+            doc_id = self.internal_to_external.get(internal_id, str(internal_id))
+        else:
             return None
         
         return {
-            'doc_id': doc_id,
-            'text': self.index.documents[doc_id],
-            'metadata': self.index.doc_metadata.get(doc_id, {}),
+            'doc_id': doc_id,  # Return external doc_id
+            'text': self.index.documents[internal_id],
+            'metadata': self.index.doc_metadata.get(internal_id, {}),
             'statistics': {
-                'length': self.index.doc_lengths[doc_id],
-                'unique_terms': len(self.index.term_frequency[doc_id]),
-                'top_terms': self.index.term_frequency[doc_id].most_common(10)
+                'length': self.index.doc_lengths[internal_id],
+                'unique_terms': len(self.index.term_frequency[internal_id]),
+                'top_terms': self.index.term_frequency[internal_id].most_common(10)
             }
         }
     
@@ -387,4 +480,6 @@ class SparseSearchEngine:
         self.index = InvertedIndex()
         self.bm25 = None
         self.next_doc_id = 0
+        self.external_to_internal = {}
+        self.internal_to_external = {}
         logger.info("Index cleared")

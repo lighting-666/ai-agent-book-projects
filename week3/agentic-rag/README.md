@@ -2,7 +2,7 @@
 
 An educational implementation of an Agentic Retrieval-Augmented Generation (RAG) system with ReAct pattern, supporting multiple LLM providers and knowledge base backends.
 
-## Features
+## 🌟 Features
 
 - **Agentic RAG with ReAct Pattern**: Uses reasoning and tool-calling to iteratively search and retrieve information
 - **Non-Agentic RAG Mode**: Simple retrieval + LLM response for comparison
@@ -16,21 +16,20 @@ An educational implementation of an Agentic Retrieval-Augmented Generation (RAG)
   - Together AI
   - DeepSeek
 - **Flexible Knowledge Base**:
-  - Local retrieval pipeline (week3/retrieval-pipeline)
+  - Local retrieval pipeline (requires ../retrieval-pipeline)
   - Dify knowledge base API
-  - RAPTOR tree-based index (week3/structured-index)
-  - GraphRAG knowledge graph index (week3/structured-index)
 - **Document Chunking**: Configurable chunking with paragraph boundary respect
 - **Evaluation Framework**: Comprehensive evaluation with Chinese legal dataset
 - **Conversation History**: Support for follow-up questions
+- **Verbose Logging**: Detailed logging to understand agent reasoning
 
-## Installation
+## 📦 Installation
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Configuration
+## ⚙️ Configuration
 
 Set environment variables in `.env` file:
 
@@ -40,67 +39,60 @@ MOONSHOT_API_KEY=your_kimi_api_key
 ARK_API_KEY=your_doubao_api_key
 SILICONFLOW_API_KEY=your_siliconflow_api_key
 OPENAI_API_KEY=your_openai_api_key
+OPENROUTER_API_KEY=your_openrouter_api_key
+GROQ_API_KEY=your_groq_api_key
+TOGETHER_API_KEY=your_together_api_key
+DEEPSEEK_API_KEY=your_deepseek_api_key
 
-# Knowledge Base Configuration
-KB_TYPE=local  # Options: "local", "dify", "raptor", "graphrag"
+# Knowledge Base Configuration (optional, defaults to local)
+KB_TYPE=local  # Options: "local", "dify"
 DIFY_API_KEY=your_dify_api_key  # if using Dify
 DIFY_DATASET_ID=your_dataset_id  # optional
 
-# Structured Index Configuration (for RAPTOR/GraphRAG)
-RAPTOR_BASE_URL=http://localhost:8080  # RAPTOR API endpoint
-GRAPHRAG_BASE_URL=http://localhost:8080  # GraphRAG API endpoint
-
-# LLM Configuration
+# LLM Configuration (optional)
 LLM_PROVIDER=kimi  # default provider
 LLM_MODEL=kimi-k2-0905-preview  # optional, uses provider defaults
 ```
 
-## Usage
+## 🚀 Usage
 
-### 1. Index Documents
+### 1. Start the Retrieval Pipeline
 
-First, index your documents into the knowledge base:
+First, start the retrieval pipeline server (required for local knowledge base):
+
+```bash
+# In a separate terminal
+cd ../retrieval-pipeline
+python main.py
+# Server will run on http://localhost:4242
+```
+
+### 2. Index Documents
+
+#### Option A: Index Chinese Law Documents (Pre-included)
+
+```bash
+# Index the included Chinese law documents
+python index_local_laws.py
+
+# With specific categories
+python index_local_laws.py --categories 宪法 民法典
+
+# With document limit
+python index_local_laws.py --max-docs 10
+```
+
+#### Option B: Index Custom Documents
 
 ```bash
 # Index a single file
-python chunking.py path/to/document.txt
+python main.py --index path/to/document.txt
 
 # Index a directory
-python chunking.py path/to/documents/ --extensions .txt .md
+python main.py --index path/to/documents/
 
 # Custom chunk size
-python chunking.py documents/ --chunk-size 2048 --max-chunk-size 4096
-```
-
-For the evaluation dataset, first generate and index the legal documents:
-
-```bash
-# Generate legal documents
-cd evaluation
-python dataset_builder.py
-
-# Index them
-cd ..
-python chunking.py evaluation/legal_documents.json
-```
-
-### 2. Start Knowledge Base Backend
-
-#### For Local Retrieval Pipeline:
-```bash
-cd ../retrieval-pipeline
-python main.py
-```
-
-#### For RAPTOR or GraphRAG:
-```bash
-cd ../structured-index
-
-# Build index first (example with Intel manual)
-python main.py build path/to/intel_manual.pdf --type both
-
-# Start API server
-python main.py serve
+python main.py --index documents/ --chunk-size 2048
 ```
 
 ### 3. Run the Agentic RAG System
@@ -108,20 +100,36 @@ python main.py serve
 #### Interactive Mode (Default)
 
 ```bash
-# Agentic mode
+# Start in agentic mode (default)
 python main.py
 
-# Non-agentic mode  
+# Start in non-agentic mode  
 python main.py --mode non-agentic
 
-# Compare both modes
-python main.py --mode compare --query "故意杀人罪判几年？"
+# Enable verbose logging (default is enabled)
+python main.py --verbose
+
+# Disable verbose logging
+python main.py --no-verbose
 ```
+
+In interactive mode:
+- Type your questions and press Enter
+- Type 'quit' or 'exit' to stop
+- Type 'clear' to clear conversation history
+- Type 'mode' to switch between agentic/non-agentic modes
 
 #### Single Query
 
 ```bash
-python main.py --query "盗窃罪的立案标准是什么？" --mode agentic
+# Agentic mode
+python main.py --query "宪法第一条是什么？" --mode agentic
+
+# Non-agentic mode
+python main.py --query "盗窃罪的立案标准是什么？" --mode non-agentic
+
+# Compare both modes
+python main.py --query "故意杀人罪判几年？" --mode compare
 ```
 
 #### Batch Processing
@@ -134,6 +142,9 @@ echo "故意杀人罪判几年？
 
 # Run batch
 python main.py --batch queries.txt --output results.json
+
+# Batch with specific mode
+python main.py --batch queries.txt --mode non-agentic
 ```
 
 #### With Different Providers
@@ -141,185 +152,198 @@ python main.py --batch queries.txt --output results.json
 ```bash
 python main.py --provider openai --model gpt-4o-2024-11-20
 python main.py --provider doubao --model doubao-seed-1-6-thinking-250715
-```
-
-#### With Structured Index Backends
-
-```bash
-# Using RAPTOR tree-based index
-KB_TYPE=raptor python main.py --query "What are Intel x86 registers?"
-
-# Using GraphRAG knowledge graph
-KB_TYPE=graphrag python main.py --query "Show relationships between CPU instructions"
-
-# Test structured backends
-python test_structured_backends.py
+python main.py --provider siliconflow --query "你好"
 ```
 
 ### 4. Run Evaluation
 
 ```bash
-# Generate evaluation dataset and documents
+# Build evaluation dataset
 cd evaluation
 python dataset_builder.py
 
 # Run evaluation
-python evaluate.py --dataset legal_qa_dataset.json --output results
+python evaluate.py
 
 # With specific configuration
-python evaluate.py --provider kimi --kb-type local
+python evaluate.py --provider kimi --kb-type local --output custom_results
 ```
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 agentic-rag/
 ├── config.py              # Configuration classes
 ├── agent.py               # Main AgenticRAG implementation
-├── tools.py               # Knowledge base tools (with RAPTOR/GraphRAG support)
+├── tools.py               # Knowledge base tools
 ├── chunking.py            # Document chunking and indexing
 ├── main.py                # Main entry point
-├── test_structured_backends.py  # Test RAPTOR/GraphRAG integration
+├── index_local_laws.py    # Index Chinese law documents
+├── quickstart.py          # Quick demo script
+├── test_simple.py         # Simple test script
 ├── requirements.txt       # Dependencies
 ├── README.md              # This file
 ├── document_store.json    # Local document storage
+├── laws/                  # Chinese law documents
+│   ├── 1-宪法/
+│   ├── 2-宪法相关法/
+│   ├── 3-民法典/
+│   ├── 3-民法商法/
+│   ├── 4-行政法/
+│   ├── 5-经济法/
+│   ├── 6-社会法/
+│   ├── 7-刑法/
+│   └── 8-诉讼与非诉讼程序法/
 └── evaluation/
     ├── dataset_builder.py # Build evaluation dataset
-    ├── evaluate.py        # Evaluation framework
-    ├── legal_qa_dataset.json    # Evaluation questions
-    ├── legal_documents.json     # Legal knowledge base
-    └── results/           # Evaluation results
+    └── evaluate.py        # Evaluation framework
 ```
 
-## How It Works
+## 🧠 How It Works
 
 ### Agentic RAG Mode
 
-1. **ReAct Pattern**: The agent reasons about what information is needed
-2. **Tool Calling**: Uses `knowledge_base_search` to find relevant chunks
-3. **Iterative Refinement**: May perform multiple searches with different queries
-4. **Document Retrieval**: Can fetch full documents with `get_document` for context
-5. **Answer Synthesis**: Combines retrieved information to answer the question
-6. **Citations**: Always includes source citations
+The agent uses the ReAct (Reasoning + Acting) pattern:
 
-### Knowledge Base Backends
+1. **Reasoning**: Analyzes what information is needed to answer the question
+2. **Tool Calling**: Uses `knowledge_base_search` tool to find relevant chunks
+3. **Iterative Search**: May perform multiple searches with refined queries
+4. **Document Retrieval**: Can fetch complete documents with `get_document` for context
+5. **Answer Synthesis**: Combines retrieved information with citations
+6. **Conversation Memory**: Maintains context for follow-up questions
 
-#### RAPTOR (Tree-Based Index)
-- **Hierarchical Structure**: Creates multi-level tree with recursive summarization
-- **Level-Aware Search**: Searches across different abstraction levels
-- **Clustering**: Groups similar content using Gaussian Mixture Models
-- **Best For**: Long technical documents with hierarchical information
-
-#### GraphRAG (Knowledge Graph)
-- **Entity Extraction**: Identifies entities and relationships using LLMs
-- **Community Detection**: Groups related entities into communities
-- **Graph Search**: Searches entities, relationships, and communities
-- **Best For**: Documents with complex relationships between concepts
+Example flow:
+```
+User: 宪法第一条是什么？
+Agent: [Thinks] Need to find information about Article 1 of the Constitution
+       [Tool] knowledge_base_search("宪法第一条")
+       [Result] Found relevant chunks about constitutional articles
+       [Answer] Based on the retrieved information, Article 1 states...
+```
 
 ### Non-Agentic RAG Mode
 
-1. **Simple Retrieval**: Searches once with the user's exact query
-2. **Context Injection**: Puts top results in LLM context
-3. **Direct Answer**: LLM answers based on provided context
+Simple retrieval-augmented generation:
+
+1. **Direct Search**: Searches once with the user's query as-is
+2. **Context Injection**: Puts top-K results in the prompt
+3. **Single Response**: LLM answers based on provided context
 4. **No Iteration**: Single-shot approach without refinement
 
-## Evaluation Results
+## 📊 Configuration Options
 
-The evaluation framework compares both modes across:
+### Top-K Results
 
-- **Simple Cases**: Direct legal questions (e.g., "故意杀人罪判几年？")
-- **Complex Cases**: Multi-faceted legal scenarios requiring analysis
+Control how many search results to retrieve:
 
-Metrics include:
-- Success rate
-- Response time
-- Keyword/concept recall
-- Citation quality
-- Difficulty-specific performance
+```python
+# In config.py or via environment
+local_top_k = 3  # Number of results to retrieve
+```
 
-### Expected Results
+### Verbose Mode
 
-Agentic RAG typically shows:
-- **Better recall** for complex multi-aspect questions
-- **More complete answers** through iterative search
-- **Better citations** through explicit tool use
-- **Slower response time** due to multiple LLM calls
+See detailed agent reasoning:
 
-Non-Agentic RAG typically shows:
-- **Faster responses** with single retrieval
-- **Good performance** on simple direct questions  
-- **Limited ability** to handle complex scenarios
-- **Less comprehensive** coverage of topics
+```bash
+# Enable verbose (default)
+python main.py --verbose
 
-## Troubleshooting
+# Disable for cleaner output
+python main.py --no-verbose
+```
 
-### Local Retrieval Pipeline Not Responding
+### LLM Temperature
+
+Control response randomness:
+
+```python
+# In config.py
+temperature = 0.7  # 0.0 = deterministic, 1.0 = more creative
+```
+
+## 🎯 Evaluation Results
+
+The system includes an evaluation framework that compares both modes:
+
+### Metrics
+- **Success Rate**: Whether the answer contains key legal concepts
+- **Response Time**: Time to generate response
+- **Retrieval Quality**: Relevance of retrieved chunks
+- **Citation Coverage**: Proper source attribution
+
+### Expected Patterns
+
+**Agentic RAG** typically shows:
+- ✅ Better coverage of complex multi-faceted questions
+- ✅ More accurate citations through explicit tool use  
+- ✅ Ability to refine searches based on initial results
+- ⚠️ Slower response time (multiple LLM calls)
+
+**Non-Agentic RAG** typically shows:
+- ✅ Faster responses (single retrieval step)
+- ✅ Good performance on simple, direct questions
+- ⚠️ May miss relevant information with poor query formulation
+- ⚠️ Limited ability to handle ambiguous queries
+
+## 🔧 Troubleshooting
+
+### Retrieval Pipeline Not Responding
 
 ```bash
 # Check if the service is running
-curl http://localhost:8002/health
+curl http://localhost:4242/health
 
-# Start the service
+# If not, start it:
 cd ../retrieval-pipeline
 python main.py
 ```
 
-### Structured Index API Not Responding
+### No Search Results
 
+1. Ensure documents are indexed:
 ```bash
-# Check if the API is running
-curl http://localhost:8080/status
+python index_local_laws.py
+```
 
-# Start the API server
-cd ../structured-index
-python main.py serve
+2. Check document store:
+```bash
+ls -la document_store.json
+```
 
-# Verify indexes are built
-curl http://localhost:8080/statistics
+3. Verify retrieval pipeline has documents:
+```bash
+curl http://localhost:4242/stats
 ```
 
 ### API Key Issues
 
-Ensure environment variables are set:
 ```bash
-export MOONSHOT_API_KEY=your_key
-# or use .env file
+# Check if environment variable is set
+echo $MOONSHOT_API_KEY
+
+# Or use .env file
+cat .env | grep API_KEY
 ```
 
 ### Indexing Errors
 
-- Ensure the retrieval pipeline is running before indexing
+- Ensure retrieval pipeline is running before indexing
 - Check file encodings (UTF-8 expected)
-- Verify chunk sizes are appropriate
+- Verify network connectivity to localhost:4242
 
-## Educational Notes
+## 🤝 Contributing
 
-This implementation demonstrates:
+Areas for potential enhancement:
 
-1. **Agent Design Patterns**: ReAct pattern with tool use
-2. **RAG Architecture**: Retrieval, ranking, and generation
-3. **Evaluation Methodology**: Systematic comparison of approaches
-4. **Multi-Provider Support**: Abstraction for different LLMs
-5. **Chinese NLP**: Handling Chinese text and legal domain
-
-Key learning points:
-- Agentic approaches trade speed for quality
-- Tool use enables more sophisticated reasoning
-- Evaluation should consider multiple dimensions
-- Domain-specific knowledge requires careful indexing
-
-## License
-
-This is an educational project for learning purposes.
-
-## Contributing
-
-Feel free to extend this project with:
 - Additional evaluation metrics
 - More sophisticated chunking strategies
 - Better reranking algorithms
-- Additional knowledge base backends
+- Additional knowledge base backends (RAPTOR, GraphRAG)
 - Multi-language support
-- Custom entity extraction for GraphRAG
-- Alternative clustering algorithms for RAPTOR
-- Hybrid retrieval combining multiple backends
+- Query expansion techniques
+- Hybrid retrieval strategies
+
+## 📄 License
+
+This is an educational project for learning purposes.

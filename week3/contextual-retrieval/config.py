@@ -34,7 +34,7 @@ class LLMConfig:
     model: Optional[str] = None  # Will use provider defaults if not specified
     api_key: Optional[str] = None  # Will read from env if not provided
     temperature: float = 0.7
-    max_tokens: int = 4096
+    max_tokens: int = 1024
     stream: bool = True
     
     # Provider-specific defaults
@@ -122,8 +122,8 @@ class KnowledgeBaseConfig:
     type: KnowledgeBaseType = KnowledgeBaseType.LOCAL
     
     # Local retrieval pipeline config
-    local_base_url: str = "http://localhost:8002"
-    local_top_k: int = 10
+    local_base_url: str = "http://localhost:4242"
+    local_top_k: int = 3
     
     # Dify config
     dify_api_key: Optional[str] = field(default_factory=lambda: os.getenv("DIFY_API_KEY"))
@@ -132,12 +132,12 @@ class KnowledgeBaseConfig:
     dify_top_k: int = 10
     
     # RAPTOR tree-based index config
-    raptor_base_url: str = "http://localhost:8080"
+    raptor_base_url: str = "http://localhost:4242"
     raptor_top_k: int = 10
     raptor_search_levels: bool = True  # Search across multiple tree levels
     
     # GraphRAG graph-based index config
-    graphrag_base_url: str = "http://localhost:8080"
+    graphrag_base_url: str = "http://localhost:4242"
     graphrag_top_k: int = 10
     graphrag_search_type: str = "hybrid"  # entity, community, or hybrid
     
@@ -149,7 +149,7 @@ class KnowledgeBaseConfig:
 class ChunkingConfig:
     """Document chunking configuration"""
     chunk_size: int = 2048  # Characters per chunk
-    max_chunk_size: int = 4096  # Max size when respecting paragraph boundaries
+    max_chunk_size: int = 1024  # Max size when respecting paragraph boundaries
     chunk_overlap: int = 200  # Overlap between chunks
     respect_paragraph_boundary: bool = True
     min_chunk_size: int = 100  # Minimum chunk size

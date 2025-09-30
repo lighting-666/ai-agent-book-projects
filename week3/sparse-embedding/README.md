@@ -5,6 +5,7 @@ An educational implementation of a sparse vector search engine using inverted in
 ## Features
 
 - **Full BM25 Implementation**: Complete implementation of the BM25 ranking algorithm
+- **Advanced Tokenization**: Comprehensive tokenizer handling numbers, codes, technical terms, and mixed case
 - **Inverted Index**: Efficient inverted index data structure for term lookup
 - **HTTP API**: RESTful API built with FastAPI
 - **Interactive Web UI**: Browser-based interface for indexing and searching
@@ -12,11 +13,24 @@ An educational implementation of a sparse vector search engine using inverted in
 - **Index Visualization**: APIs to inspect the internal structure of the index
 - **In-Memory Storage**: Simple in-memory storage for educational purposes
 
+### Tokenization Capabilities
+
+The TextProcessor now provides comprehensive tokenization for real-world text:
+
+- **Numbers**: `404`, `3.14`, `2.0.1`
+- **Codes**: `XK9-2B4-7Q1`, `API_KEY_123`
+- **Technical Terms**: `C++`, `.NET`, `Node.js`
+- **Mixed Case**: `JavaScript`, `PyTorch`, `iPhone`
+- **Email**: `user@example.com`
+- **Hex Codes**: `#FF5733`, `0x1234`
+- **Acronyms**: `API`, `HTTP`, `NASA`
+- **Alphanumeric**: `Python3`, `ES6`, `HTML5`
+
 ## Architecture
 
 ### Core Components
 
-1. **TextProcessor**: Handles text tokenization and stop word removal
+1. **TextProcessor**: Advanced tokenizer handling words, numbers, codes, technical terms, and mixed case
 2. **InvertedIndex**: Maintains the inverted index structure with term frequencies and document frequencies
 3. **BM25**: Implements the BM25 ranking algorithm for relevance scoring
 4. **SparseSearchEngine**: Main engine coordinating all components
@@ -49,11 +63,11 @@ pip install -r requirements.txt
 python server.py
 ```
 
-The server will start on `http://localhost:8000`
+The server will start on `http://localhost:4241`
 
 ### Web Interface
 
-Open your browser and navigate to `http://localhost:8000` to access the interactive web UI.
+Open your browser and navigate to `http://localhost:4241` to access the interactive web UI.
 
 ### API Endpoints
 
@@ -166,7 +180,7 @@ Each search result includes debug information:
 
 ## API Documentation
 
-Interactive API documentation is available at `http://localhost:8000/docs` when the server is running.
+Interactive API documentation is available at `http://localhost:4241/docs` when the server is running.
 
 ## Project Structure
 

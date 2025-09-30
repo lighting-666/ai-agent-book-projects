@@ -140,7 +140,14 @@ async def interactive_chat(agent: MultimodalAgent) -> None:
                         type=content_type,
                         path=args
                     )
-                    print(f"Loaded {content_type}: {path.name}")
+                    
+                    # Extract content immediately if in extract mode
+                    result = await agent.load_and_extract_content(current_content)
+                    print(result)
+                    
+                    # In extract mode, content is already extracted, no need to keep it
+                    if agent.extraction_mode == ExtractionMode.EXTRACT_TO_TEXT:
+                        current_content = None
                     
                 elif command == "/mode":
                     if args == "native":

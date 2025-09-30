@@ -274,7 +274,7 @@ class RetrievalPipeline:
                 "rank": idx + 1,
                 "doc_id": result.doc_id,
                 "rerank_score": result.rerank_score,
-                "text": result.text[:500] if result.text else None,
+                "text": result.text,
                 "metadata": result.metadata
             }
             

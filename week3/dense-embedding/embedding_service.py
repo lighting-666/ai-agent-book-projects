@@ -43,9 +43,7 @@ class EmbeddingService:
         try:
             self.model = BGEM3FlagModel(
                 self.model_name, 
-                use_fp16=self.use_fp16,
-                query_instruction_for_retrieval="",  # No instruction prefix
-                max_length=self.max_seq_length
+                use_fp16=self.use_fp16
             )
             
             # Get embedding dimension by encoding a test sentence
