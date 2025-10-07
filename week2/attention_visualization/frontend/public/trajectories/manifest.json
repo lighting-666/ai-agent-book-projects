@@ -12,5 +12,54 @@
     "timestamp": "2025-09-14 21:14:44",
     "category": "ReAct",
     "query": "Calculate the exact compound interest on $5,000 invested at 6% annual interest rate for 30 years, compounded monthly."
+  },
+  {
+    "filename": "trajectory_20250922_213346.json",
+    "id": "20250922_213346",
+    "timestamp": "2025-09-22 21:33:46",
+    "category": "Knowledge",
+    "query": "What is the capital of France?"
+  },
+  {
+    "filename": "trajectory_20250922_213402.json",
+    "id": "20250922_213402",
+    "timestamp": "2025-09-22 21:34:02",
+    "category": "Math",
+    "query": "Calculate 25 * 4 + 10"
+  },
+  {
+    "filename": "trajectory_20250922_213417.json",
+    "id": "20250922_213417",
+    "timestamp": "2025-09-22 21:34:17",
+    "category": "Creative",
+    "query": "Write a haiku about spring"
+  },
+  {
+    "filename": "trajectory_20250922_213433.json",
+    "id": "20250922_213433",
+    "timestamp": "2025-09-22 21:34:33",
+    "category": "Reasoning",
+    "query": "If all cats are animals, and some animals are pets, can we conclude that all cats are pets?"
+  },
+  {
+    "filename": "trajectory_20250922_213448.json",
+    "id": "20250922_213448",
+    "timestamp": "2025-09-22 21:34:48",
+    "category": "Code",
+    "query": "Write a Python function to calculate factorial"
+  },
+  {
+    "filename": "trajectory_20250922_214319.json",
+    "id": "20250922_214319",
+    "timestamp": "2025-09-22 21:43:20",
+    "category": "ReAct",
+    "query": "What's the weather like in Vancouver right now?"
+  },
+  {
+    "filename": "trajectory_20250922_214751.json",
+    "id": "20250922_214751",
+    "timestamp": "2025-09-22 21:47:55",
+    "category": "ReAct",
+    "query": "Calculate the exact compound interest on $5,000 invested at 6% annual interest rate for 30 years, compounded monthly."
   }
 ]

@@ -140,7 +140,22 @@ def compare_streaming_vs_regular():
         content = chunk.get("content", "")
         
         if chunk_type == "thinking":
-            print(f"[THINKING] \033[90m{content}\033[0m")
+            # print(f"[THINKING] \033[90m{content}\033[0m") #这样子会出现一个每个字符一行 （原先代码是这个）出现了：
+                    # [THINKING] n
+                    # [THINKING] h
+                    # [THINKING] e
+                    # [THINKING] i
+                    # [THINKING] t
+                    # [THINKING] .
+                    # [THINKING]
+
+            print(f"\033[90m{content}\033[0m", end="", flush=True)
+                # 在你的代码中，flush=True 主要用于：
+                # 实现流式思考过程的实时显示
+                # 确保每个字符立即显示，创造打字机效果
+                # 提供更好的实时反馈体验
+                # 没有 flush=True 时，内容可能会被缓存，不会立即显示
+                # 使用 flush=True 时，每个字符都会立即显示
         elif chunk_type == "tool_call":
             print(f"[TOOL CALL] {content}")
         elif chunk_type == "tool_result":

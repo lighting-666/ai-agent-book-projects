@@ -1,0 +1,24 @@
+Counting files in directory: C:\study\boj_ai_agent_study\ai-agent-book-projects\week2\system-hint
+--------------------------------------------------
+Total files found: 19
+
+Files:
+ 1. .env
+ 2. agent.py
+ 3. config.py
+ 4. count_files.py
+ 5. env.example
+ 6. hello_world.py
+ 7. main.py
+ 8. NOTES.md
+ 9. project_analysis_report.md
+10. quickstart.py
+11. README.md
+12. requirements.txt
+13. run_sample.sh
+14. sample_result.md
+15. test_basic.py
+16. test_hint_behavior.py
+17. test_read_file.py
+18. trajectory.json
+19. view_trajectory.py

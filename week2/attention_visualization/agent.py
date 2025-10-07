@@ -58,6 +58,8 @@ class GenerationResult:
     response: str = ""  # For compatibility
     tokens: List[str] = field(default_factory=list)  # For compatibility
     attention_weights: Dict = field(default_factory=dict)  # For compatibility
+    temperature: float = 0.7  # Store generation parameters
+    max_new_tokens: int = 100
     
     def __post_init__(self):
         if not self.tokens:
@@ -295,8 +297,8 @@ class AttentionVisualizationAgent:
             },
             "metadata": {
                 "model": self.model_name,
-                "temperature": temperature,
-                "max_tokens": max_new_tokens,
+                "temperature": getattr(result, 'temperature', 0.7),  # Default if not available
+                "max_tokens": getattr(result, 'max_new_tokens', 100),  # Default if not available
                 "device": str(self.device),
                 "attention_type": "output_only"  # Clarify attention type
             }
@@ -440,7 +442,9 @@ class AttentionVisualizationAgent:
             output_tokens=output_tokens,
             tokens=all_tokens,  # Complete token sequence
             attention_steps=attention_steps,
-            context_length=context_length
+            context_length=context_length,
+            temperature=temperature,  # Store generation parameters
+            max_new_tokens=max_new_tokens
         )
         
         # Save trajectory if requested

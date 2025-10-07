@@ -1,0 +1,249 @@
+{
+  "user_id": "default_user",
+  "type": "advanced_json_cards",
+  "updated_at": "2025-09-30T21:05:48.705701",
+  "categories": {
+    "travel": {
+      "passport_jessica_martinez": {
+        "backstory": "Jessica Martinez discussed passport renewal details during a USPS passport services conversation, later confirmed travel plans during flight booking",
+        "date_created": "2024-06-15 14:30:00",
+        "person": "Jessica Martinez",
+        "relationship": "primary account holder",
+        "passport_number": "487223901",
+        "expiration_date": "2025-02-18",
+        "issued_year": "2015",
+        "passport_type": "ePassport with chip",
+        "renewal_eligibility": "mail renewal eligible",
+        "confirmed_travel": "January 15-22, 2025 Tokyo business conference",
+        "urgent_renewal_needed": "Yes - expires less than month after return",
+        "_metadata": {
+          "created_at": "2025-09-30T21:04:18.413340",
+          "updated_at": "2025-09-30T21:05:01.509851",
+          "source": "session-3f8135b1"
+        }
+      },
+      "japan_travel_requirements": {
+        "backstory": "Jessica asked about requirements for business travel to Japan during passport renewal discussion",
+        "date_created": "2024-06-15 14:30:00",
+        "person": "Jessica Martinez",
+        "relationship": "primary account holder",
+        "destination": "Japan",
+        "visa_required": "No for US citizens up to 90 days",
+        "purpose": "business conference",
+        "typical_requirements": "proof of onward travel, sufficient funds, return ticket",
+        "vaccinations": "No required vaccinations, check CDC recommendations",
+        "covid_restrictions": "Most lifted as of conversation date",
+        "_metadata": {
+          "created_at": "2025-09-30T21:04:18.415347",
+          "updated_at": "2025-09-30T21:04:18.415347",
+          "source": "session-3f8135b1"
+        }
+      },
+      "passport_renewal_process": {
+        "backstory": "Jessica received detailed instructions for mail-in passport renewal",
+        "date_created": "2024-06-15 14:30:00",
+        "person": "Jessica Martinez",
+        "relationship": "primary account holder",
+        "form_required": "DS-82",
+        "mailing_address": "National Passport Processing Center, Post Office Box 90955, Philadelphia, PA 19190-0955",
+        "processing_time_standard": "6-8 weeks",
+        "processing_time_expedited": "2-3 weeks",
+        "deadline_for_january_travel": "submit by early October",
+        "tracking_website": "travel.state.gov",
+        "urgent_appointment_location": "11000 Wilshire Blvd, Suite 1000, Los Angeles",
+        "_metadata": {
+          "created_at": "2025-09-30T21:04:18.417853",
+          "updated_at": "2025-09-30T21:04:18.417853",
+          "source": "session-3f8135b1"
+        }
+      },
+      "tokyo_flight_booking_jan2025": {
+        "backstory": "Jessica booked a business class flight to Tokyo for a conference during Delta booking conversation",
+        "date_created": "2024-06-15 15:45:00",
+        "person": "Jessica Martinez",
+        "relationship": "primary account holder",
+        "airline": "Delta",
+        "flight_numbers": "DL 7 (outbound), DL 8 (return)",
+        "departure_date": "2025-01-15",
+        "return_date": "2025-01-22",
+        "route": "LAX to Haneda (HND)",
+        "class": "Business",
+        "seat": "4A",
+        "confirmation_number": "DELTA-JMK892",
+        "fare": "$4,890",
+        "skymiles_number": "2847569923",
+        "miles_earned": "22,000",
+        "_metadata": {
+          "created_at": "2025-09-30T21:05:01.504747",
+          "updated_at": "2025-09-30T21:05:01.504747",
+          "source": "session-3f8135b1"
+        }
+      },
+      "delta_preferences": {
+        "backstory": "Jessica expressed travel preferences during Tokyo flight booking",
+        "date_created": "2024-06-15 15:45:00",
+        "person": "Jessica Martinez",
+        "relationship": "primary account holder",
+        "preferred_airline": "Delta",
+        "seat_preference": "Window",
+        "meal_preference": "Vegetarian options available",
+        "terminal_at_lax": "Terminal 2",
+        "check_in_timing": "2.5 hours early with TSA PreCheck",
+        "wifi_usage": "complimentary in business class",
+        "_metadata": {
+          "created_at": "2025-09-30T21:05:01.508845",
+          "updated_at": "2025-09-30T21:05:01.508845",
+          "source": "session-3f8135b1"
+        }
+      },
+      "international_travel_benefits": {
+        "backstory": "Jessica learned about her credit card travel benefits for upcoming international trips",
+        "date_created": "2024-06-15 16:30:00",
+        "person": "Jessica Martinez",
+        "relationship": "primary account holder",
+        "priority_pass_membership": "Active with 2 free guests",
+        "lounge_access": "Chase Sapphire Lounges (Boston, Hong Kong, LGA), Priority Pass lounges worldwide",
+        "rental_car_insurance": "Primary coverage when paid with card",
+        "travel_insurance": "Trip cancellation $10,000, trip delay, lost luggage, emergency medical (when paid with card)",
+        "points_earning": "3x on travel/dining worldwide, 1x on other purchases",
+        "points_value": "1.5 cents each via Chase Ultimate Rewards for travel",
+        "_metadata": {
+          "created_at": "2025-09-30T21:05:48.701703",
+          "updated_at": "2025-09-30T21:05:48.701703",
+          "source": "session-3f8135b1"
+        }
+      },
+      "upcoming_business_travel": {
+        "backstory": "Jessica mentioned multiple international business destinations during credit card consultation",
+        "date_created": "2024-06-15 16:30:00",
+        "person": "Jessica Martinez",
+        "relationship": "primary account holder",
+        "confirmed_destinations": "Japan (Tokyo, January 15-22, 2025)",
+        "potential_destinations": "Singapore, London",
+        "travel_purpose": "Business conferences",
+        "preferred_payment_method": "Corporate AmEx for flights, Chase Sapphire for other expenses",
+        "_metadata": {
+          "created_at": "2025-09-30T21:05:48.702699",
+          "updated_at": "2025-09-30T21:05:48.702699",
+          "source": "session-3f8135b1"
+        }
+      },
+      "chase_rewards_partners": {
+        "backstory": "Jessica learned about Chase Ultimate Rewards transfer partners during card consultation",
+        "date_created": "2024-06-15 16:30:00",
+        "person": "Jessica Martinez",
+        "relationship": "primary account holder",
+        "airline_partners": "United, Southwest, JetBlue, Air France/KLM Flying Blue (can book Delta flights)",
+        "hotel_partners": "Hyatt, Marriott, IHG",
+        "transfer_strategy": "Can transfer points to partners for potentially higher value than 1.5 cents each",
+        "_metadata": {
+          "created_at": "2025-09-30T21:05:48.705701",
+          "updated_at": "2025-09-30T21:05:48.705701",
+          "source": "session-3f8135b1"
+        }
+      }
+    },
+    "financial": {
+      "passport_renewal_costs": {
+        "backstory": "Jessica inquired about passport renewal fees during USPS consultation",
+        "date_created": "2024-06-15 14:30:00",
+        "person": "Jessica Martinez",
+        "relationship": "primary account holder",
+        "regular_renewal": "$130",
+        "expedited_processing": "$60 additional",
+        "total_expedited": "$190",
+        "in_person_fee": "$35 additional",
+        "photo_service": "$15 at post office",
+        "payment_method": "check or money order only for mail renewal",
+        "_metadata": {
+          "created_at": "2025-09-30T21:04:18.416848",
+          "updated_at": "2025-09-30T21:04:18.416848",
+          "source": "session-3f8135b1"
+        }
+      },
+      "corporate_amex_card": {
+        "backstory": "Jessica used corporate AmEx for flight payment during booking",
+        "date_created": "2024-06-15 15:45:00",
+        "person": "Jessica Martinez",
+        "relationship": "primary account holder",
+        "card_type": "Corporate American Express",
+        "card_number_ending": "23001",
+        "expiration": "12/26",
+        "cvv": "4421",
+        "company": "TechCorp",
+        "_metadata": {
+          "created_at": "2025-09-30T21:05:01.506846",
+          "updated_at": "2025-09-30T21:05:01.506846",
+          "source": "session-3f8135b1"
+        }
+      },
+      "chase_sapphire_reserve_card": {
+        "backstory": "Jessica discussed her Chase Sapphire Reserve card details during international travel consultation",
+        "date_created": "2024-06-15 16:30:00",
+        "person": "Jessica Martinez",
+        "relationship": "primary account holder",
+        "card_type": "Chase Sapphire Reserve",
+        "card_number_ending": "8823",
+        "credit_limit": "$25,000",
+        "current_balance": "$3,200",
+        "foreign_transaction_fees": "None",
+        "statement_close_date": "28th of each month",
+        "payment_due_date": "22nd of following month",
+        "autopay_setting": "Full balance",
+        "_metadata": {
+          "created_at": "2025-09-30T21:05:48.699694",
+          "updated_at": "2025-09-30T21:05:48.699694",
+          "source": "session-3f8135b1"
+        }
+      },
+      "international_banking_tips": {
+        "backstory": "Jessica received advice about international ATM usage and currency conversion",
+        "date_created": "2024-06-15 16:30:00",
+        "person": "Jessica Martinez",
+        "relationship": "primary account holder",
+        "atm_recommendation": "Use Chase debit card at international ATMs, avoid credit card cash advances",
+        "japan_atm_partners": "7-Eleven ATMs, Japan Post Bank ATMs",
+        "currency_conversion_tip": "Always pay in local currency, decline merchant USD conversion",
+        "cash_advance_warning": "High fees and immediate interest on credit card cash advances",
+        "_metadata": {
+          "created_at": "2025-09-30T21:05:48.703702",
+          "updated_at": "2025-09-30T21:05:48.703702",
+          "source": "session-3f8135b1"
+        }
+      }
+    },
+    "personal": {
+      "jessica_martinez_profile": {
+        "backstory": "Jessica shared personal details during passport renewal consultation",
+        "date_created": "2024-06-15 14:30:00",
+        "person": "Jessica Martinez",
+        "relationship": "primary account holder",
+        "work_arrangement": "works from home most days",
+        "travel_frequency": "moderate - doesn't need 52-page passport",
+        "name_changes": "none",
+        "current_passport_pages": "standard 28-page book",
+        "_metadata": {
+          "created_at": "2025-09-30T21:04:18.418855",
+          "updated_at": "2025-09-30T21:04:18.418855",
+          "source": "session-3f8135b1"
+        }
+      },
+      "jessica_martinez_full_identity": {
+        "backstory": "Jessica provided complete identification details during flight booking",
+        "date_created": "2024-06-15 15:45:00",
+        "person": "Jessica Martinez",
+        "relationship": "primary account holder",
+        "full_name": "Jessica Marie Martinez",
+        "date_of_birth": "1985-03-08",
+        "email": "jmartinez@techcorp.com",
+        "known_traveler_number": "9988432",
+        "billing_zip": "90210",
+        "_metadata": {
+          "created_at": "2025-09-30T21:05:01.505751",
+          "updated_at": "2025-09-30T21:05:01.505751",
+          "source": "session-3f8135b1"
+        }
+      }
+    }
+  }
+}

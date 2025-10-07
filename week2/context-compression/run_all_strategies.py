@@ -52,11 +52,20 @@ class StrategyRunner:
         )
         
         # File handler
-        file_handler = logging.FileHandler(self.log_file)
+        file_handler = logging.FileHandler(self.log_file, encoding='utf-8')
         file_handler.setLevel(logging.DEBUG)
         file_handler.setFormatter(formatter)
         
         # Console handler - with custom filter for cleaner output
+        # For Windows, use sys.stdout with utf-8 encoding
+        if sys.platform == 'win32':
+            # Ensure stdout is using utf-8
+            import codecs
+            sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer)
+            console_handler = logging.StreamHandler(sys.stdout)
+        else:
+            console_handler = logging.StreamHandler()
+        
         console_handler = logging.StreamHandler()
         console_handler.setLevel(logging.INFO)
         # Use a simpler format for console
@@ -392,3 +401,45 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+'''
+这是由于使用了流式输出（streaming）模式导致的。在你的代码中，我可以看到在创建agent时设置了 `enable_streaming=True`：
+
+```python
+agent = ResearchAgent(
+    api_key=Config.MOONSHOT_API_KEY,
+    compression_strategy=strategy,
+    verbose=False,
+    enable_streaming=True  # Enable streaming to see compressions
+)
+```
+
+流式输出意味着模型生成的响应会实时地一个token一个token地返回，而不是等到整个响应都生成完才一次性返回。这就是为什么你会看到像这样的日志：
+
+```
+2025-09-30 17:49:00 - DEBUG - [AGENT]  help
+2025-09-30 17:49:00 - DEBUG - [AGENT]  you
+2025-09-30 17:49:00 - DEBUG - [AGENT]  research
+```
+
+每一行都是模型生成的一个token。这种模式的好处是：
+1. 用户可以更快地看到开始的响应
+2. 对于长回答，可以实时看到生成进度
+3. 有助于调试和监控模型的生成过程
+
+最后的完整输出 `2025-09-30 17:49:04 - DEBUG - [AGENT] 🤖 Assistant: ...` 是将所有token组合在一起后的完整消息。
+
+如果你不希望看到这些token级别的详细日志，你可以：
+
+1. 在创建agent时设置 `enable_streaming=False`
+2. 或者在日志配置中调整日志级别，因为这些token日志是以 DEBUG 级别记录的，你可以将控制台处理器的级别设置为 INFO 来过滤掉它们
+
+在你的代码中，控制台处理器已经设置为 INFO 级别：
+
+```python
+console_handler.setLevel(logging.INFO)
+```
+
+但是看起来实际运行时还是显示了 DEBUG 级别的日志，这可能是因为后续的代码中改变了日志级别。你可以检查确保控制台处理器始终保持在 INFO 级别，这样就不会显示这些详细的token日志了。
+
+'''
