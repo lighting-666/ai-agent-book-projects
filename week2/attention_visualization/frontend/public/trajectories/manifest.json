@@ -14,6 +14,7 @@
     "query": "Calculate the exact compound interest on $5,000 invested at 6% annual interest rate for 30 years, compounded monthly."
   },
   {
+<<<<<<< HEAD
     "filename": "trajectory_20250922_213346.json",
     "id": "20250922_213346",
     "timestamp": "2025-09-22 21:33:46",
@@ -52,14 +53,27 @@
     "filename": "trajectory_20250922_214319.json",
     "id": "20250922_214319",
     "timestamp": "2025-09-22 21:43:20",
+=======
+    "filename": "trajectory_20250918_203008.json",
+    "id": "20250918_203008",
+    "timestamp": "2025-09-18 20:30:08",
+>>>>>>> e8fa3187bd868c600a0545dfeab9f2cc3048c446
     "category": "ReAct",
     "query": "What's the weather like in Vancouver right now?"
   },
   {
+<<<<<<< HEAD
     "filename": "trajectory_20250922_214751.json",
     "id": "20250922_214751",
     "timestamp": "2025-09-22 21:47:55",
     "category": "ReAct",
     "query": "Calculate the exact compound interest on $5,000 invested at 6% annual interest rate for 30 years, compounded monthly."
+=======
+    "filename": "trajectory_20250930_193645.json",
+    "id": "20250930_193645",
+    "timestamp": "2025-09-30 19:36:45",
+    "category": "ReAct",
+    "query": "What's the weather like in Vancouver right now?"
+>>>>>>> e8fa3187bd868c600a0545dfeab9f2cc3048c446
   }
 ]
