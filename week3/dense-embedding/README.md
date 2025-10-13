@@ -262,6 +262,11 @@ curl -X POST http://localhost:4240/index \
   -H "Content-Type: application/json" \
   -d '{"text": "This is a test document about machine learning."}'
 ```
+if run in cmd of windows:
+need to use like: 
+```bash
+curl -X POST "http://localhost:4240/index" -H "Content-Type: application/json" -d "{\"text\":\"Machine learning is a subset of AI that enables systems to learn from data.\"}"
+```
 
 Search for similar documents:
 ```bash

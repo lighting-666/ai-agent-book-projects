@@ -9,7 +9,7 @@ from typing import List, Dict, Any
 class VectorSearchClient:
     """Client for testing the vector search service."""
     
-    def __init__(self, base_url: str = "http://localhost:8000"):
+    def __init__(self, base_url: str = "http://localhost:4240"):
         """Initialize the client."""
         self.base_url = base_url
     
@@ -68,7 +68,7 @@ def run_demo():
     # Check service status
     print("\n📊 Checking service status...")
     try:
-        response = requests.get("http://localhost:8000/")
+        response = requests.get("http://localhost:4240/")
         status = response.json()
         print(f"✅ Service is running")
         print(f"   - Index type: {status['index_type']}")
